@@ -93,7 +93,7 @@ def getRandomWord(wordlist):
 def display(mw,bk):
 	
 	print("\n\n\t***** HANGEDMAN / Food & Animals *****\n\n")
-	print(HANGEDMAN[len(mw)])
+	print(HANGMAN[len(mw)])
 	print("\n\n")
 	print("\t\t",end='')
 
