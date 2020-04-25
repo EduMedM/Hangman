@@ -80,7 +80,7 @@ def clear():
 	if (name == 'nt'): #for windows
 		_ = system('cls')
 
-	else:              #for Linux
+	else:              #for Linux or Mac (name is 'posix')
 		 _ = system('clear')
 
 
@@ -179,6 +179,7 @@ while(True):
 			break
 
 		elif(len(missed_letter) == 6):
+			print(HANGMAN[6])
 			print("\n\n\t\tYou lost!!!")
 			print("\n\t\tThe word was: ",listToString(word))
 			break
