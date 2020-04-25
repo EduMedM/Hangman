@@ -143,12 +143,9 @@ def listToString(s):
 
 #------------ main ------------#
 
-keep_playing = True
-attempts = 6
-
 clear()
 
-while(keep_playing):
+while(True):
 	word = getRandomWord(words)
 	blanks = '_' * len(word)
 	missed_letter = []
@@ -157,7 +154,7 @@ while(keep_playing):
 	word = list(word)
 	blanks = list(blanks)
 
-	while(len(missed_letter) < attempts):
+	while(len(missed_letter) < 6):
 
 		display(missed_letter, blanks)
 		letter = getUserLetter(correct_letter + missed_letter)
@@ -181,7 +178,7 @@ while(keep_playing):
 			print("\n\n\t\tYou have won!!!")
 			break
 
-		elif(len(missed_letter) == attempts):
+		elif(len(missed_letter) == 6):
 			print("\n\n\t\tYou lost!!!")
 			print("\n\t\tThe word was: ",listToString(word))
 			break
