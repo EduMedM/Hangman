@@ -139,10 +139,11 @@ def display(mw,bk,word):
 
 	print('\n\n\t\tEnter a letter: ',end='')
 
-def getUserLetter(entered_letters):
+def getUserLetter(entered_letters,display,*args):
 	
 	while(True):
 
+		display(*args)
 		guess_letter = input()
 		guess_letter = guess_letter.lower()
 
@@ -158,6 +159,9 @@ def getUserLetter(entered_letters):
 		else:
 			return guess_letter
 
+		sleep(1.5)
+		clear()
+
 def playAgain():
 	
 	print("\n\n\t\tDo you want to play again?:  ",end='')
@@ -172,25 +176,24 @@ def main():
 	while(True):
 		word = getRandomWord(chooseATopic())
 		blanks = '_' * len(word)
-		missed_letter = []
-		correct_letter = []
+		missed_letters = []
+		correct_letters = []
 		clear()
 
-		while(len(missed_letter) < 6):
+		while(len(missed_letters) < 6):
 
-			display(missed_letter, blanks, word)
-			letter = getUserLetter(correct_letter + missed_letter)
+			letter = getUserLetter(correct_letters + missed_letters, display, missed_letters, blanks, word)
 
 			if(letter in(word)):
 				
-				correct_letter.append(letter)
+				correct_letters.append(letter)
 
 				for i in range(len(word)):
 					if(word[i] == letter):
 						blanks = blanks[:i] + letter + blanks[i+1:]
 
 			else:
-				missed_letter.append(letter)
+				missed_letters.append(letter)
 
 			clear()
 
@@ -199,7 +202,7 @@ def main():
 				print("\n\n\t\tYou have won!!!")
 				break
 
-			elif(len(missed_letter) == 6):
+			elif(len(missed_letters) == 6):
 				print(HANGMAN[6])
 				print("\n\n\t\tYou lost!!!")
 				print("\n\t\tThe word was: ",word)
