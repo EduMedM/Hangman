@@ -1,12 +1,14 @@
 '''
 	EduMedM
-	23-04-2020
+	Start: 23-04-2020
 
 '''
 
 from os import system, name
 
-from random import randint
+from random import randint, choice
+
+from time import sleep
 
 HANGMAN = ['''
                    [=]----[=]
@@ -60,20 +62,21 @@ HANGMAN = ['''
                         [=====]''']
   
 
-words = '''caterpillar butterfly grasshopper mantis scorpion beetle ant 
+words = {'animals':'''caterpillar butterfly grasshopper mantis scorpion beetle ant 
 		mosquito spider fly bee wasp eagle owl pigeon canary parrot chicken 
 		pelican duck penguin flamingo fish swordfish shark cobra alligator 
 		turtle iguana lizard salamander frog koala armadillo kangaroo bat rat
 		mouse squirrel rabbit hippopotamus llama rhino elephant zebra pony horse
 		sheep donkey giraffe cow camel leopard tiger lion cat kitten fox whale
 		otter seal lobster crab dolphin monkey gorilla orangutan panda bear polarbear 
-		grizzlybeardog wolf hyena broccoli lettuce spinach celery beans corn asparagus 
+		grizzlybeardog wolf hyena'''.split(),
+		'food':'''broccoli lettuce spinach celery beans corn asparagus 
 		cabbage tomato cucumber eggplant pepper potato garlic pumpkin zucchini mushrooms
 		onion carrot beet grapes apple coconut pineapple mango papaya orange grapefruit
 		lemon lime strawberry raspberries blueberries blackberries pear cherries banana
 		watermelon peanut almond avocado peach beef steak pork sausage bacon ham eggs
 		mustard hotdog hamburger spaghetti salad butter cookie taco biscuit pizza toast
-		coffee icecream chocolat cake'''.split()
+		coffee icecream chocolat cake'''.split()}
 
 def clear():
 
@@ -83,16 +86,43 @@ def clear():
 	else:              #for Linux or Mac (name is 'posix')
 		 _ = system('clear')
 
+def chooseATopic():
 
-def getRandomWord(wordlist):
+	print("\n\n\tEnter an option (enter the name or number): ")
+	print("\t\n\t1.- Random Topic.")
+	print("\t\n\t2.- Animals.")
+	print("\t\n\t3.- Food.")
+
+	option = input("\n\tOption: ").lower()
+
+	if (option.startswith('r') or option == '1'):
+		return choice(['animals','food'])
+
+	elif(option.startswith('a') or option == '2'):
+		return 'animals'
+
+	elif(option.startswith('f') or option == '3'):
+		return 'food'
+
+	else:
+		print("\n\n\tChoose a correct option. ",end='')
+		sleep(1)
+		clear()
+
+def getRandomWord(words_key):
 	
-	word_index = randint(0, len(words) - 1)
+	word_list = words[words_key]
+	word_index = randint(0, len(word_list) - 1)
 
-	return wordlist[word_index]
+	return word_list[word_index]
 
-def display(mw,bk):
+def display(mw,bk,word):
 	
-	print("\n\n\t***** HANGEDMAN / Food & Animals *****\n\n")
+	if (word in words['animals']):
+		print("\n\n\t***** HANGMAN / Animals *****\n\n")
+	elif(word in words['food']):
+		print("\n\n\t***** HANGMAN / Food *****\n\n")
+
 	print(HANGMAN[len(mw)])
 	print("\n\n")
 	print("\t\t",end='')
@@ -132,61 +162,52 @@ def playAgain():
 
 	return input().lower().startswith('y')
 
-def listToString(s):
-	
-	string = ''
-
-	for element in s:
-		string += element
-
-	return string
-
 #------------ main ------------#
 
-clear()
+def main():
+	clear()
 
-while(True):
-	word = getRandomWord(words)
-	blanks = '_' * len(word)
-	missed_letter = []
-	correct_letter = []
+	while(True):
+		word = getRandomWord(chooseATopic())
+		blanks = '_' * len(word)
+		missed_letter = []
+		correct_letter = []
+		clear()
 
-	word = list(word)
-	blanks = list(blanks)
+		while(len(missed_letter) < 6):
 
-	while(len(missed_letter) < 6):
+			display(missed_letter, blanks, word)
+			letter = getUserLetter(correct_letter + missed_letter)
 
-		display(missed_letter, blanks)
-		letter = getUserLetter(correct_letter + missed_letter)
+			if(letter in(word)):
+				
+				correct_letter.append(letter)
 
+				for i in range(len(word)):
+					if(word[i] == letter):
+						blanks = blanks[:i] + letter + blanks[i+1:]
 
-		if(letter in(word)):
-			
-			correct_letter.append(letter)
+			else:
+				missed_letter.append(letter)
 
-			for i in range(len(word)):
-				if(word[i] == letter):
-					blanks[i] = word[i]
+			clear()
+
+			if(blanks == word):
+				print("\n\t\t",word)
+				print("\n\n\t\tYou have won!!!")
+				break
+
+			elif(len(missed_letter) == 6):
+				print(HANGMAN[6])
+				print("\n\n\t\tYou lost!!!")
+				print("\n\t\tThe word was: ",word)
+				break
+
+		if(not(playAgain())):
+			break
 
 		else:
-			missed_letter.append(letter)
+			clear()
 
-		clear()
-
-		if(blanks == word):
-			print("\n\t\t",listToString(word))
-			print("\n\n\t\tYou have won!!!")
-			break
-
-		elif(len(missed_letter) == 6):
-			print(HANGMAN[6])
-			print("\n\n\t\tYou lost!!!")
-			print("\n\t\tThe word was: ",listToString(word))
-			break
-
-	if(not(playAgain())):
-		break
-
-	else:
-		clear()
+main()
 
