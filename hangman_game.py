@@ -88,26 +88,28 @@ def clear():
 
 def chooseATopic():
 
-	print("\n\n\tEnter an option (enter the name or number): ")
-	print("\t\n\t1.- Random Topic.")
-	print("\t\n\t2.- Animals.")
-	print("\t\n\t3.- Food.")
+	while True:
 
-	option = input("\n\tOption: ").lower()
+		print("\n\n\tEnter an option (enter the name or number): ")
+		print("\t\n\t1.- Random Topic.")
+		print("\t\n\t2.- Animals.")
+		print("\t\n\t3.- Food.")
 
-	if (option.startswith('r') or option == '1'):
-		return choice(['animals','food'])
+		option = input("\n\tOption: ").lower()
 
-	elif(option.startswith('a') or option == '2'):
-		return 'animals'
+		if (option.startswith('r') or option == '1'):
+			return choice(['animals','food'])
 
-	elif(option.startswith('f') or option == '3'):
-		return 'food'
+		elif(option.startswith('a') or option == '2'):
+			return 'animals'
 
-	else:
-		print("\n\n\tChoose a correct option. ",end='')
-		sleep(1)
-		clear()
+		elif(option.startswith('f') or option == '3'):
+			return 'food'
+
+		else:
+			print("\n\n\tChoose a correct option. ",end='')
+			sleep(1)
+			clear()
 
 def getRandomWord(words_key):
 	
